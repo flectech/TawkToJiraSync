@@ -44,7 +44,7 @@ def sendEmail(subject, message):
 
     message = Mail(
         from_email=os.environ.get("EmailFrom"),
-        to_emails='nick.burch@flectch.uk',
+        to_emails=os.environ.get("TawkTo_TicketsEmail"),
         subject=subject,
         plain_text_content=message)
     try:

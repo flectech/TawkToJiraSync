@@ -1,0 +1,18 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+
+    "JiraProject": "SUP",
+    "JiraInstance": "https://example.atlassian.net/",
+    "JiraUsername": "jira@example.com",
+    "JiraKey": "putYOURapiKEYhere",
+
+    "TawkTo_TicketsEmail": "PUTyourTICKETSemailHERE@tickets.tawk.to",
+    "TawkTo_Secret": "TODO",
+
+    "Sendgrid_API_Key":"SENDGRIDapiKEYhere"
+    "EmailFrom": "tickets@example.com"
+  }
+}

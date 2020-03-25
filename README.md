@@ -11,6 +11,20 @@ version.
 This should probably work for an on-premise JIRA instance too, but is more
 typically for JIRA Cloud use.
 
+## Getting started
+If you are new to deploying Python-based Functions on Azure, you may well
+find the tutorial at
+https://www.scalyr.com/blog/azure-functions-in-python-a-simple-introduction/
+helpful!
+
+Generally, you need Visual Studio Code installed, with the Azure Functions 
+add-in installed+enabled, and the Azure Functions SDK installed.
+
+See also
+https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python
+
+## Secrets, Keys etc
+
 ## Installation
 *TODO*
 
@@ -22,5 +36,5 @@ You need to get a JIRA API Token, eg from
 https://id.atlassian.com/manage/api-tokens
 
 ## Based on
-https://www.scalyr.com/blog/azure-functions-in-python-a-simple-introduction/
 https://developer.tawk.to/webhooks/
+https://blog.developer.atlassian.com/creating-a-jira-cloud-issue-in-a-single-rest-call/
