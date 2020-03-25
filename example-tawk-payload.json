@@ -1,0 +1,19 @@
+{
+    "event": "ticket:create",
+    "time": "2019-06-28T14:07:13.512Z",
+    "property": {
+        "id": "58ca8453b8a7e060cd3b1ecb",
+        "name": "Bobs Burgers"
+    },
+    "requester": {
+        "name": "Martins",
+        "email": "martins@tawk.to",
+        "type": "agent"
+    },
+    "ticket": {
+        "id": "02598050-99ae-11e9-8887-97564881b95b",
+        "humanId": 3,
+        "subject": "Testing",
+        "message": "Once more through the breach"
+    }
+}

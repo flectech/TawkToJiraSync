@@ -24,16 +24,42 @@ See also
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python
 
 ## Secrets, Keys etc
+Before you can install + configure this function, you need to get a load of
+secrets and keys to hand.
 
-## Installation
-*TODO*
+### Tawk.To
+You need your Tawk.To ticket creation/update email address, so that the
+Tawk.To ticket can be updated with the JIRA ticket reference. This is the
+same email you send to in order to create new tickets
 
-## Configuration
-*TODO*
+### JIRA
+You need:
+ * An API key - see https://id.atlassian.com/manage/api-tokens
+ * Your username
+ * The short code of roject you want to create tickets in
+ * Your base URL
 
-## JIRA Configuration
-You need to get a JIRA API Token, eg from 
-https://id.atlassian.com/manage/api-tokens
+### SendGrid
+Sending emails directly isn't allowed from Azure Functions. So, you need to
+sign up for an account with SendGrid (eg via Azure), then create an API
+key
+
+## Local Configuration
+Copy local.settings.json.example to local.settings.json, then populate 
+the values with the secrets above
+
+## Remote Configuration
+Once you have deployed the code to Azure, go to the Function in Azure, 
+go to Configuration, then Application Settings. For each key/value pair
+i the local settings file, define an Application Setting. Don't forget to
+save once they are all defined!
+
+## Tawk.To Configuration
+In Azure, go to Function then the Method, then copy the Function URL.
+
+In Tawk, setup a new Webhook for Ticket Creation, and paste in the
+Function URL. Make sure to specify the full URL including the code
+parameter.
 
 ## Based on
 https://developer.tawk.to/webhooks/
