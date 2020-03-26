@@ -15,10 +15,8 @@ settings = Settings()
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Tawk.To WebHook request received')
 
-    # TODO Verify the HMAC
-
     # Parse the JSON
-    data = json.loads(req.get_body())
+    data = verifyAndLoad(req.get_body())
 
     logging.info("Jira Project is %s", settings.jiraProject())
     return func.HttpResponse("TODO", status_code=500)
@@ -33,6 +31,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(f"Ticket created in JIRA as %s" % jref)
     else:
         return func.HttpResponse("Error creating JIRA ticket", status_code=500)
+
+def verifyAndLoad(body):
+    # TODO Verify the HMAC
+    return json.loads(body)
 
 def generateTicketEmail(ticket):
     (before, after) = os.environ.get("TawkTo_TicketsEmail").split("@")

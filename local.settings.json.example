@@ -6,7 +6,7 @@
 
     "Jira_Project": "SUP",
     "Jira_Instance": "https://example.atlassian.net/",
-    "Jira_IssueID": "10004",
+    "Jira_IssueType": "10004",
     "Jira_CustomField_TawkSID": "",
     "Jira_CustomField_TawkHID": "",
 
@@ -16,7 +16,7 @@
     "TawkTo_TicketsEmail": "PUTyourTICKETSemailHERE@tickets.tawk.to",
     "TawkTo_Secret": "TODO",
 
-    "Sendgrid_API_Key":"SENDGRIDapiKEYhere"
+    "Sendgrid_APIKey":"SENDGRIDapiKEYhere"
     "EmailFrom": "tickets@example.com"
   }
 }

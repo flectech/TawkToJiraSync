@@ -25,9 +25,15 @@ class _Setting(object):
 class Settings(object):
     _JIRA_PROJECT  = _Setting("Jira_Project")
     _JIRA_INSTANCE = _Setting("Jira_Instance")
-    _JIRA_ISSUE_ID = _Setting("Jira_IssueID")
-    _JIRA_FIELD_SID = _Setting("Jira_CustomField)TawkSID", True)
-    _JIRA_FIELD_HID = _Setting("Jira_CustomField_TawkHID", True)
+    _JIRA_ISSUE_TYPE = _Setting("Jira_IssueType")
+    _JIRA_FIELD_SID  = _Setting("Jira_CustomField_TawkSID", True)
+    _JIRA_FIELD_HID  = _Setting("Jira_CustomField_TawkHID", True)
+    _JIRA_USERNAME = _Setting("Jira_Username")
+    _JIRA_APIKEY   = _Setting("Jira_APIKey")
+    _TAWKTO_EMAIL  = _Setting("TawkTo_TicketsEmail")
+    _TAWKTO_SECRET = _Setting("TawkTo_Secret")
+    _SENDGRID_APIKEY = _Setting("Sendgrid_APIKey")
+    _EMAIL_FROM = _Setting("EmailFrom")
 
     def __init__(self):
         for s in _ALL_SETTINGS:
@@ -35,4 +41,30 @@ class Settings(object):
                 raise Exception("Missing required setting '%s' - must be added to Application Settings to run function" % s.envstr)
 
     def jiraProject(self):
+        """
+        What is the Project Key of the Project to work with?
+        """
         return self._JIRA_PROJECT.get()
+    def jiraInstance(self):
+        """
+        What is the URL of the JIRA Instance to talk to?
+        """
+        return self._JIRA_INSTANCE.get()
+    def jiraIssueType(self):
+        return self._JIRA_ISSUE_TYPE.get()
+    def jiraFieldTawkSystemID(self):
+        return self._JIRA_FIELD_SID.get()
+    def jiraFieldTawkHumanID(self):
+        return self._JIRA_FIELD_HID.get()
+    def jiraUsername(self):
+        return self._JIRA_USERNAME.get()
+    def jiraAPIKey(self):
+        return self._JIRA_APIKEY.get()
+    def tawkTicketsEmail(self):
+        return self._TAWKTO_EMAIL()
+    def tawkSecret(self):
+        return self._TAWKTO_SECRET.get()
+    def sendgridAPIKey(self):
+        return self._SENDGRID_APIKEY.get()
+    def emailFrom(self):
+        return self._EMAIL_FROM.get()
