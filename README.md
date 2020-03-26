@@ -44,6 +44,9 @@ Sending emails directly isn't allowed from Azure Functions. So, you need to
 sign up for an account with SendGrid (eg via Azure), then create an API
 key
 
+You should also disable the various tracking features, so that the JIRA URL
+doesn't get changed when sending back to Tawk.To
+
 ## Local Configuration
 Copy local.settings.json.example to local.settings.json, then populate 
 the values with the secrets above
@@ -64,3 +67,6 @@ parameter.
 ## Based on
 https://developer.tawk.to/webhooks/
 https://blog.developer.atlassian.com/creating-a-jira-cloud-issue-in-a-single-rest-call/
+
+## TODO
+* Support getting a Webhook call from JIRA to update Tawk.to
