@@ -13,10 +13,10 @@ def buildNewTicketData(ticket):
     "fields": {
         "summary": ticket["subject"],
         "issuetype": {
-            "id": "10004"
+            "id": settings.jiraIssueType(),
         },
         "project": {
-            "key": os.environ.get("JiraProject"),
+            "key": settings.jiraProject(),
         },
         "description": {
             "type": "doc",
@@ -53,11 +53,10 @@ def createTicketInJIRA(ticket):
     data = buildNewTicketData(ticket)
 
     r = requests.post(url, json=data,
-            auth=HTTPBasicAuth(os.environ.get("JiraUsername"),
-                                os.environ.get("JiraKey")))
+            auth=HTTPBasicAuth(settings.jiraUsername, settings.jiraAPIKey()))
 
     if (r.status_code < 200 or r.status_code > 299):
-        logging.error(r.status_code)
+        logging.error("JIRA ticket creation failed: %d", r.status_code)
         logging.error(r.json())
         return None
 
