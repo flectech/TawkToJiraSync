@@ -7,21 +7,32 @@
 
 import os
 
+_ALL_SETTINGS = []
+
 class _Setting(object):
-    def __init__(self, addto, envstr, optional=False):
+    def __init__(self, envstr, optional=False):
         self.envstr = envstr
         self.optional = optional
-        addto.append(self)
+        _ALL_SETTINGS.append(self)
     def valid(self):
         if self.optional:
             return True
-        return os.environ.get(self.envstr) != None
+        val = os.environ.get(self.envstr)
+        return val != None and repr(val) != ""
     def get(self):
         return os.environ.get(self.envstr)
 
 class Settings(object):
-    _AS = []
-    _JIRA_PROJECT = _Setting(_AS, "JiraProject")
+    _JIRA_PROJECT  = _Setting("Jira_Project")
+    _JIRA_INSTANCE = _Setting("Jira_Instance")
+    _JIRA_ISSUE_ID = _Setting("Jira_IssueID")
+    _JIRA_FIELD_SID = _Setting("Jira_CustomField)TawkSID", True)
+    _JIRA_FIELD_HID = _Setting("Jira_CustomField_TawkHID", True)
+
+    def __init__(self):
+        for s in _ALL_SETTINGS:
+            if not s.valid():
+                raise Exception("Missing required setting '%s' - must be added to Application Settings to run function" % s.envstr)
 
     def jiraProject(self):
         return self._JIRA_PROJECT.get()

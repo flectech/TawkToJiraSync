@@ -6,11 +6,10 @@ import azure.functions as func
 from requests.auth import HTTPBasicAuth
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from TicketCreated.settings import Settings
 
-# What Environment / Application settings we require
-# TODO Add the rest of these
-# TODO Verify we have all of them at startup
-required_keys = ["JiraInstance"]
+# Load our settings from Application Settings / Local Settings
+settings = Settings()
 
 # Process the request
 def main(req: func.HttpRequest) -> func.HttpResponse:
@@ -20,6 +19,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
 
     # Parse the JSON
     data = json.loads(req.get_body())
+
+    logging.info("Jira Project is %s", settings.jiraProject())
+    return func.HttpResponse("TODO", status_code=500)
 
     # Get the ticket details
     ticket = data["ticket"]
