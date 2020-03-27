@@ -8,7 +8,7 @@ from TicketCreated.settings import Settings
 settings = Settings()
 
 def buildNewTicketData(ticket):
-  # TODO Custom fields
+  # Build the standard "new ticket" request
   data = {
     "fields": {
         "summary": ticket["subject"],
@@ -45,15 +45,27 @@ def buildNewTicketData(ticket):
         }
     }
   }
-  # TODO Custom fields
+
+  # If custom fields are defined, store the Tawk.To ticket IDs in them
+  if settings.jiraFieldTawkSystemID():
+      cf = "customfield_%s" % settings.jiraFieldTawkSystemID()
+      data["fields"][cf] = ticket["id"]
+  if settings.jiraFieldTawkHumanID():
+      # Human ID from Tawk is an int, force to String
+      cf = "customfield_%s" % settings.jiraFieldTawkHumanID()
+      data["fields"][cf] = "%d" % ticket["humanId"]
+
+  # All done!
   return data
 
 def createTicketInJIRA(ticket):
     url = settings.jiraInstance() + "rest/api/3/issue"
     data = buildNewTicketData(ticket)
+    logging.info(url)
+    logging.info(data)
 
-    r = requests.post(url, json=data,
-            auth=HTTPBasicAuth(settings.jiraUsername, settings.jiraAPIKey()))
+    auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
+    r = requests.post(url, json=data, auth=auth)
 
     if (r.status_code < 200 or r.status_code > 299):
         logging.error("JIRA ticket creation failed: %d", r.status_code)
