@@ -1,5 +1,5 @@
 {
-  "scriptFile": "__init__.py",
+  "scriptFile": "tawktojira.py",
   "bindings": [
     {
       "authLevel": "function",
