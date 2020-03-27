@@ -1,11 +1,7 @@
-import os
 import logging
 import requests
 from requests.auth import HTTPBasicAuth
-from TicketCreated.settings import Settings
-
-# Load our settings from Application Settings / Local Settings
-settings = Settings()
+from TicketCreated import settings
 
 def buildNewTicketData(ticket):
   # Build the standard "new ticket" request
@@ -61,8 +57,7 @@ def buildNewTicketData(ticket):
 def createTicketInJIRA(ticket):
     url = settings.jiraInstance() + "rest/api/3/issue"
     data = buildNewTicketData(ticket)
-    logging.info(url)
-    logging.info(data)
+    logging.info("Creating new ticket in JIRA, using %s", data)
 
     auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
     r = requests.post(url, json=data, auth=auth)

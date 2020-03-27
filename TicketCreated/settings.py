@@ -61,7 +61,7 @@ class Settings(object):
     def jiraAPIKey(self):
         return self._JIRA_APIKEY.get()
     def tawkTicketsEmail(self):
-        return self._TAWKTO_EMAIL()
+        return self._TAWKTO_EMAIL.get()
     def tawkSecret(self):
         return self._TAWKTO_SECRET.get()
     def sendgridAPIKey(self):

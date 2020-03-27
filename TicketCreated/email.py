@@ -1,31 +1,42 @@
 import logging
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from TicketCreated.settings import Settings
-
-# Load our settings from Application Settings / Local Settings
-settings = Settings()
+from TicketCreated import settings
 
 def generateTawkTicketEmail(ticket):
+    ticketId = ticket
+    humanId = "n/a"
+    if (isinstance(ticket, dict)):
+        ticketId = ticket["id"]
+        humanId = ticket["humanId"]
+
     (before, after) = settings.tawkTicketsEmail().split("@")
-    plainId = ticket["id"].replace('-','')
+    plainId = ticketId.replace('-','')
     email = "%s%s@%s" % (before,plainId,after)
-    logging.info("Generated ticket email <%s> for ticket <%d>", email, ticket["humanId"])
+    logging.info("Generated ticket email <%s> for ticket <%d>", email, humanId)
     return email
+
+def generateJiraViewURL(jref):
+    return settings.jiraInstance() + "browse/" + jref
 
 def attachJIRAReference(ticket, jref):
     toaddr = generateTawkTicketEmail(ticket)
+    viewurl = generateJiraViewURL(jref)
     subject = "[#%d] %s" % (ticket["humanId"], ticket["subject"])
-    viewurl = os.environ.get("JiraInstance") + "browse/" + jref
     message = """
 This ticket has been logged in JIRA as %s.
 
 To view more details or check the latest status, please visit %s""" % (jref, viewurl)
     sendEmail(toaddr, subject, message)
 
-def recordJIRAUpdate(tawkHumanID, tawkSystemID, update):
-    # TODO
-    return
+def recordJIRAUpdate(tawkHumanID, tawkSystemID, jref, update):
+    # TODO Figure out what info we can get from a JIRA Update,
+    #      then put that into the body of the email
+    toaddr = generateTawkTicketEmail(tawkSystemID)
+    viewurl = generateJiraViewURL(jref)
+    subject = "[#%d] %s" % (tawkHumanID, jref)
+    message = "The ticket has been updated in JIRA, please see %s" % viewurl
+    sendEmail(toaddr, subject, message)
 
 def sendEmail(toaddress, subject, message):
     logging.info("Sending email to <%s> - %s", toaddress, subject)
