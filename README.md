@@ -1,15 +1,32 @@
 # TawkToJiraSync
-Azure Function that will create a ticket in Jira when a ticket is created 
-in Tawk.to
+Azure Function that will create a ticket in JIRA when a ticket is created 
+in Tawk.to, and attach that JIRA reference to the Tawk.to ticket.
 
+Optionally, it can also update the Tawk.to ticket when the JIRA ticket is
+updated or commented on.
+
+It runs as an Azure Function, a serverless environment from Microsoft Azure.
+You don't need to write any code, only create accounts and configure things.
+
+However, some experience with Azure / serverless python / JIRA will certainly
+help you with setting things up to run on Azure!
+
+## How it works
 This needs to be registered as a Webhook in your Tawk.to configuration, so
 that it gets notified when a ticket is created there. It then uses the JIRA
 REST API to create a matching ticket in JIRA. Finally, it sends an email
 back to Tawk.to, to update the ticket there with details of the JIRA
-version.
+version. 
+
+If you want, it can also be regsitered as a JIRA webhook, and then emails 
+Tawk.to to update the ticket there when JIRA is updated.
 
 This should probably work for an on-premise JIRA instance too, but is more
 typically for JIRA Cloud use.
+
+The code for this runs on Azure Functions, a serverless code hosting 
+environment on Microsoft Azure. You will need to have an Azure account,
+though a free 1 year trial ought to be more than enough!
 
 ## Getting started
 If you are new to deploying Python-based Functions on Azure, you may well
