@@ -6,7 +6,7 @@ from ..shared.email import *
 from ..shared.jira import *
 
 COMMENT_CREATED = "comment_created"
-ISSUE_UPDATED = "issue_updated"
+ISSUE_UPDATED = "jira:issue_updated"
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('JIRA WebHook request received')
@@ -15,9 +15,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     data = json.loads(req.get_body())
 
     # What kind of event was it?
-    eid   = data.get("id", None)
+    ets   = data.get("timestamp", None)
     etype = data.get("webhookEvent", None)
-    logging.info("JIRA event type %s with ID %s", etype, eid)
+    logging.info("JIRA event type %s from %s", etype, ets)
 
     # Grab the JIRA Ticket Reference
     jref = extractJiraTicket(etype, data)
@@ -27,9 +27,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     if etype == COMMENT_CREATED:
         message = buildCommentMessage(jref, data)
     elif etype == ISSUE_UPDATED:
-        logging.info("JIRA said: %s", json.dumps(data)) # TODO
         message = buildUpdateMessage(jref, data)
     else:
+        logging.warn("Unhandled event type received from JIRA <%s>", etype)
         return func.HttpResponse("Invalid event type '%s'"%etype, 
                                  status_code=400)
 
@@ -43,13 +43,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # Send the update
     recordJIRAUpdate(tawkHID, tawkSID, jref, message)
 
+    # And we're done!
     return func.HttpResponse("Thank you JIRA! Tawk %s updated" % tawkHID)
 
 def extractJiraTicket(etype, data):
-    if etype == COMMENT_CREATED:
-        return data["issue"]["key"]
-    if etype == ISSUE_UPDATED:
-        return data["key"] # Probably
+    if "key" in data:
+        return data["key"]
+    if "issue" in data:
+        issue = data["issue"]
+        if "key" in issue:
+            return issue["key"]
+
+    logging.warn("Issue Key not found in JIRA data: %s", data)
     return None
 
 def buildCommentMessage(jref, data):
@@ -59,14 +64,26 @@ def buildCommentMessage(jref, data):
     return "%s has updated %s in JIRA:\n%s" % (author, jref, text)
 
 def buildUpdateMessage(jref, data):
-    # TODO
-    return "TODO"
+    changer = data["user"]["displayName"]
+    changes = data["changelog"]["items"]
+
+    message = "%s has changed %s in JIRA:\n\n" % (changer, jref)
+    for c in changes:
+        field = c.get("field", "n/a")
+        if "toString" in c:
+            text = extractText(c["toString"])
+            message += "New %s: %s\n\n" % (field, text)
+        else:
+            logging.warn("Don't know how to describe change in JIRA: %s", c)
+    return message
 
 def getTawkDetails(etype, jref, data):
     # If this was a comment, fetch the full issue data
     if etype == COMMENT_CREATED:
         data = fetchTicketFromJIRA(jref)
     
+    if "issue" in data:
+        data = data["issue"]
     fields = data.get("fields", None)
     if not fields:
         return (None,None)
