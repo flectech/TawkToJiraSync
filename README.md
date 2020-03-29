@@ -28,7 +28,7 @@ The code for this runs on Azure Functions, a serverless code hosting
 environment on Microsoft Azure. You will need to have an Azure account,
 though a free 1 year trial ought to be more than enough!
 
-## Getting started
+# Getting started
 If you are new to deploying Python-based Functions on Azure, you may well
 find the tutorial at
 https://www.scalyr.com/blog/azure-functions-in-python-a-simple-introduction/
@@ -40,7 +40,19 @@ add-in installed+enabled, and the Azure Functions SDK installed.
 See also
 https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python
 
-## Secrets, Keys etc
+## Creating Accounts
+You will need to create a new email address on your domain, to use for ticket
+updates.
+
+Next, create an agent account in Tawk.to for that new email address. This is so
+that the webhook has permissions to update the Tickets in Tawk.to and they
+come through as a known agent.
+
+Finally, create a user in Jira for the new email address, and assign it
+permissions to your support project. This is so that the webhook can create
+new tickets in JIRA, and read them.
+
+# Secrets, Keys, Settings etc
 Before you can install + configure this function, you need to get a load of
 secrets and keys to hand.
 
@@ -53,37 +65,66 @@ same email you send to in order to create new tickets
 You need:
  * An API key - see https://id.atlassian.com/manage/api-tokens
  * Your username
- * The short code of roject you want to create tickets in
+ * The short code of project you want to create tickets in
  * Your base URL
+
+If you want to have the webhook update the Tawk.to ticket when updates are
+done in JIRA, you also need to create two custom fields for your project,
+to store the Tawk.to IDs in. These should be single-line text fields.
 
 ### SendGrid
 Sending emails directly isn't allowed from Azure Functions. So, you need to
-sign up for an account with SendGrid (eg via Azure), then create an API
-key
+sign up for an account with SendGrid, then create an API key.
+
+When logged into Azure, if you search for Sendgrid, you will be able to
+create a free account and be logged into Sendgrid. From there, create and
+save the key.
 
 You should also disable the various tracking features, so that the JIRA URL
 doesn't get changed when sending back to Tawk.To
 
 ## Local Configuration
 Copy local.settings.json.example to local.settings.json, then populate 
-the values with the secrets above
+the values with the secret and values above.
 
 ## Remote Configuration
 Once you have deployed the code to Azure, go to the Function in Azure, 
 go to Configuration, then Application Settings. For each key/value pair
-i the local settings file, define an Application Setting. Don't forget to
+in the local settings file, define an Application Setting. Don't forget to
 save once they are all defined!
 
 ## Tawk.To Configuration
-In Azure, go to Function then the Method, then copy the Function URL.
+In Azure, go to Function then the Method for `TicketCreated`, then copy 
+the Function URL.
 
 In Tawk, setup a new Webhook for Ticket Creation, and paste in the
 Function URL. Make sure to specify the full URL including the code
 parameter.
 
+Finally, copy the secret, and populate this in your settings
+
+## JIA Configuration (optional)
+In Azure, get the Function URL for `JiraUpdated`. 
+
+In JIRA, setup a new Webhook for Issue Updated and Commented, for your
+support project only, with the `JiraUpdated` function URL.
+
+Ensure that you have created the two fields for the Tawk.to IDs, and
+configured those.
+
+## Testing / tracing
+Once you have deployed your Function from Visual Studio Code, pick the
+options to follow the live logs. This will bring up the `Live Metrics`
+page for the deployed function.
+
+By watching the logs in the `Sample Telemetry` section of the page, you
+can see what is going on, why things are failing or not being processed
+etc.
+
+Additionally, you can run the functions locally with `func serve`, but
+you then need sample JSON files of the webhook requests to feed to
+the functions to debug.
+
 ## Based on
 https://developer.tawk.to/webhooks/
 https://blog.developer.atlassian.com/creating-a-jira-cloud-issue-in-a-single-rest-call/
-
-## TODO
-* Support getting a Webhook call from JIRA to update Tawk.to
