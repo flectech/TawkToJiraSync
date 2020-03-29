@@ -1,7 +1,7 @@
 import logging
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from TicketCreated import settings
+from ..TicketCreated import settings
 
 def generateTawkTicketEmail(ticket):
     ticketId = ticket

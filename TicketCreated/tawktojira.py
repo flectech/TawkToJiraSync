@@ -1,9 +1,9 @@
 import json
 import logging
 import azure.functions as func
-from TicketCreated import settings
-from TicketCreated.jira import createTicketInJIRA
-from TicketCreated.email import attachJIRAReference, recordJIRAUpdate
+from ..TicketCreated import settings
+from ..TicketCreated.jira import createTicketInJIRA
+from ..TicketCreated.email import attachJIRAReference, recordJIRAUpdate
 
 # Process the request
 def main(req: func.HttpRequest) -> func.HttpResponse:

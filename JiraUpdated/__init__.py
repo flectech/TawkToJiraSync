@@ -1,7 +1,7 @@
 import json
 import logging
 import azure.functions as func
-from TicketCreated import settings
+from ..TicketCreated import settings
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('JIRA WebHook request received')
