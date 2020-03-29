@@ -54,6 +54,26 @@ def buildNewTicketData(ticket):
   # All done!
   return data
 
+def extractText(body):
+    # Is it a nice, simple plain text?
+    if isinstance(body, str):
+        return body
+    logging.warn("TODO: Support body: %s", body)
+    return "TODO: Parse body"
+
+def fetchTicketFromJIRA(jref):
+    logging.info("Fetching ticket from JIRA - %s", jref)
+
+    url = settings.jiraInstance() + "rest/api/3/issue/%s" % jref
+    auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
+    r = requests.get(url, auth=auth)
+
+    if (r.status_code < 200 or r.status_code > 299):
+        logging.error("JIRA ticket fetching failed: %d", r.status_code)
+        logging.error(r.json())
+        return None
+    return r.json()
+
 def createTicketInJIRA(ticket):
     url = settings.jiraInstance() + "rest/api/3/issue"
     data = buildNewTicketData(ticket)
