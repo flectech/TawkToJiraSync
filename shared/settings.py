@@ -34,6 +34,7 @@ class Settings(object):
     _TAWKTO_SECRET = _Setting("TawkTo_Secret")
     _SENDGRID_APIKEY = _Setting("Sendgrid_APIKey")
     _EMAIL_FROM = _Setting("EmailFrom")
+    _YOUR_COMPANY = _Setting("YourCompany", True)
 
     def __init__(self):
         for s in _ALL_SETTINGS:
@@ -68,3 +69,5 @@ class Settings(object):
         return self._SENDGRID_APIKEY.get()
     def emailFrom(self):
         return self._EMAIL_FROM.get()
+    def yourCompany(self):
+        return self._YOUR_COMPANY.get()

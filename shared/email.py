@@ -22,10 +22,12 @@ def attachJIRAReference(ticket, jref):
     toaddr = generateTawkTicketEmail(ticket)
     viewurl = generateJiraViewURL(jref)
     subject = "[#%d] %s" % (ticket["humanId"], ticket["subject"])
-    message = """
-This ticket has been logged in JIRA as %s.
 
-To view more details or check the latest status, please visit %s""" % (jref, viewurl)
+    viewtext = "To view more details or check the latest status, please visit "
+    if settings.yourCompany():
+        viewtext = "%s internal team reference: " % settings.yourCompany()
+
+    message = "This ticket has been logged in JIRA as %s.\n\n%s %s" % (jref, viewtext, viewurl)
     sendEmail(toaddr, subject, message)
 
 def recordJIRAUpdate(tawkHumanID, tawkSystemID, jref, message):

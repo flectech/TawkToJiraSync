@@ -16,7 +16,8 @@
     "TawkTo_TicketsEmail": "PUTyourTICKETSemailHERE@tickets.tawk.to",
     "TawkTo_Secret": "TODO",
 
-    "Sendgrid_APIKey":"SENDGRIDapiKEYhere"
-    "EmailFrom": "tickets@example.com"
+    "Sendgrid_APIKey":"SENDGRIDapiKEYhere",
+    "EmailFrom": "tickets@example.com",
+    "YourCompany": "Example Company"
   }
 }
