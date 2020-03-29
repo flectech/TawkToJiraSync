@@ -91,4 +91,4 @@ def getTawkDetails(etype, jref, data):
     cust_fields = [settings.jiraFieldTawkSystemID(),
                    settings.jiraFieldTawkHumanID()]
     vals = [fields.get("customfield_%s"%f,None) for f in cust_fields]
-    return [int(v) if v.isdigit() else v for v in vals]
+    return [int(v) if v and v.isdigit() else v for v in vals]
