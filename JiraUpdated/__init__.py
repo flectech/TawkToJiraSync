@@ -41,9 +41,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info("Matching Tawk.To ticket identified - %s <%s>", tawkHID, tawkSID)
 
     # Send the update
-    
-
-    # TODO Make sense of it
+    recordJIRAUpdate(tawkHID, tawkSID, jref, message)
 
     return func.HttpResponse("Thank you JIRA! Tawk %s updated" % tawkHID)
 
@@ -58,7 +56,7 @@ def buildCommentMessage(jref, data):
     comment = data["comment"]
     author = comment["author"]["displayName"]
     text = extractText(comment["body"])
-    return "%s has updated %s:\n%s" % (author, jref, text)
+    return "%s has updated %s in JIRA:\n%s" % (author, jref, text)
 
 def buildUpdateMessage(jref, data):
     # TODO
@@ -75,4 +73,5 @@ def getTawkDetails(etype, jref, data):
 
     cust_fields = [settings.jiraFieldTawkSystemID(),
                    settings.jiraFieldTawkHumanID()]
-    return [fields.get("customfield_%s"%f,None) for f in cust_fields]
+    vals = [fields.get("customfield_%s"%f,None) for f in cust_fields]
+    return [int(v) if v.isdigit() else v for v in vals]

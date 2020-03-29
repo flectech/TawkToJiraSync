@@ -3,10 +3,9 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from . import settings
 
-def generateTawkTicketEmail(ticket):
-    ticketId = ticket
-    humanId = "n/a"
-    if (isinstance(ticket, dict)):
+def generateTawkTicketEmail(ticketId, humanId=None):
+    if (isinstance(ticketId, dict)):
+        ticket = ticketId
         ticketId = ticket["id"]
         humanId = ticket["humanId"]
 
@@ -29,13 +28,10 @@ This ticket has been logged in JIRA as %s.
 To view more details or check the latest status, please visit %s""" % (jref, viewurl)
     sendEmail(toaddr, subject, message)
 
-def recordJIRAUpdate(tawkHumanID, tawkSystemID, jref, update):
-    # TODO Figure out what info we can get from a JIRA Update,
-    #      then put that into the body of the email
-    toaddr = generateTawkTicketEmail(tawkSystemID)
+def recordJIRAUpdate(tawkHumanID, tawkSystemID, jref, message):
+    toaddr = generateTawkTicketEmail(tawkSystemID, tawkHumanID)
     viewurl = generateJiraViewURL(jref)
     subject = "[#%d] %s" % (tawkHumanID, jref)
-    message = "The ticket has been updated in JIRA, please see %s" % viewurl
     sendEmail(toaddr, subject, message)
 
 def sendEmail(toaddress, subject, message):
