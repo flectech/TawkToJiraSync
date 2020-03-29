@@ -1,7 +1,7 @@
 import logging
 import requests
 from requests.auth import HTTPBasicAuth
-from ..TicketCreated import settings
+from . import settings
 
 def buildNewTicketData(ticket):
   # Build the standard "new ticket" request
