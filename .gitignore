@@ -139,3 +139,9 @@ local.settings.json
 .python_packages
 sample.dat
 .funcignore
+
+# VSCode
+.vscode/
+
+# Local notes etc
+FlecIssueTypes.txt
