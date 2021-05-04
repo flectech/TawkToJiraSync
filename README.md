@@ -59,7 +59,8 @@ secrets and keys to hand.
 ### Tawk.To
 You need your Tawk.To ticket creation/update email address, so that the
 Tawk.To ticket can be updated with the JIRA ticket reference. This is the
-same email you send to in order to create new tickets
+same email you send to in order to create new tickets, typically 
+something like `tickets@your-tenant.tawk.email`
 
 ### JIRA
 You need:

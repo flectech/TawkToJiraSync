@@ -11,7 +11,7 @@ def generateTawkTicketEmail(ticketId, humanId=None):
 
     (before, after) = settings.tawkTicketsEmail().split("@")
     plainId = ticketId.replace('-','')
-    email = "%s%s@%s" % (before,plainId,after)
+    email = "%s+%s@%s" % (before,plainId,after)
     logging.info("Generated ticket email <%s> for ticket <%d>", email, humanId)
     return email
 
