@@ -51,6 +51,9 @@ def buildNewTicketData(ticket):
       cf = "customfield_%s" % settings.jiraFieldTawkHumanID()
       data["fields"][cf] = "%d" % ticket["humanId"]
 
+  # TODO Can we pass along additional Tawk.To metadata, such as tags?
+  # Do they come through as properties? https://developer.tawk.to/webhooks/#chatstartevent
+
   # All done!
   return data
 

@@ -16,6 +16,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     ticket = data["ticket"]
     logging.info("Tawk.To new ticket: %s - %s - %s", ticket["id"], ticket["humanId"], ticket["subject"])
 
+    # TODO Check to see if JIRA already knows about this ticket
+    # Every so often, Tawk.To will ping us multiple times for the same ticket
+
     # Create the matching ticket in JIRA
     jref = createTicketInJIRA(ticket)
 
