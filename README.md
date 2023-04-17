@@ -127,5 +127,5 @@ you then need sample JSON files of the webhook requests to feed to
 the functions to debug.
 
 ## Based on
-https://developer.tawk.to/webhooks/
-https://blog.developer.atlassian.com/creating-a-jira-cloud-issue-in-a-single-rest-call/
+ * https://developer.tawk.to/webhooks/
+ * https://blog.developer.atlassian.com/creating-a-jira-cloud-issue-in-a-single-rest-call/
