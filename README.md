@@ -30,8 +30,10 @@ though a free 1 year trial ought to be more than enough!
 
 # Getting started
 If you are new to deploying Python-based Functions on Azure, you may well
-find the tutorial at
-https://www.scalyr.com/blog/azure-functions-in-python-a-simple-introduction/
+find the tutorials at
+https://www.sentinelone.com/blog/azure-functions-in-python-a-simple-introduction/
+and
+https://learn.microsoft.com/en-us/azure/azure-functions/create-first-function-vs-code-python
 helpful!
 
 Generally, you need Visual Studio Code installed, with the Azure Functions 
