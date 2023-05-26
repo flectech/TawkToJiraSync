@@ -23,7 +23,9 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     jref = createTicketInJIRA(ticket)
 
     # If possible, send an email to Tawk.To with the JIRA detials in
-    if jref:
+    if jref == "Ticket exists":
+        return func.HttpResponse("Ticket already exists")
+    elif jref:
         attachJIRAReference(ticket, jref)
         return func.HttpResponse(f"Ticket created in JIRA as %s" % jref)
     else:

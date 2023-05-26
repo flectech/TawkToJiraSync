@@ -79,10 +79,29 @@ def fetchTicketFromJIRA(jref):
 
 def createTicketInJIRA(ticket):
     url = settings.jiraInstance() + "rest/api/3/issue"
+    pickerUrl = settings.jiraInstance() + "rest/api/3/issue/picker"
     data = buildNewTicketData(ticket)
     logging.info("Creating new ticket in JIRA, using %s", data)
 
     auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
+    ticketId = ticket["humanId"]
+    # find out if ticket has already posted
+    query = {
+      'query': '',
+      'currentJQL': "description ~ '"+ticketId+"' in Tawk.to'"
+
+    }
+    pickResponse = requests.request(
+       "GET",
+       pickerUrl,
+       params=query,
+       auth=auth
+    )
+    logging.info("pick found: %s", pickResponse.json())
+    shouldNotCreateTicket = bool(pickResponse.json()['sections'][0]['issues'])
+    if (shouldNotCreateTicket):
+        return "Ticket exists"
+    
     r = requests.post(url, json=data, auth=auth)
 
     if (r.status_code < 200 or r.status_code > 299):
@@ -91,5 +110,5 @@ def createTicketInJIRA(ticket):
         return None
 
     jref = r.json()["key"]
-    logging.info("Ticket created in JIRA for %d as %s", ticket["humanId"], jref)
+    logging.info("Ticket created in JIRA for %d as %s", ticketId, jref)
     return jref
