@@ -78,25 +78,25 @@ def fetchTicketFromJIRA(jref):
     return r.json()
 
 def ticketPresentInJira(ticket):
-    pickerUrl = settings.jiraInstance() + "rest/api/3/issue/picker"
+    searchUrl = settings.jiraInstance() + "rest/api/3/search"
     ticketId = ticket["humanId"]
     auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
 
     jql = "description ~ '%d' in Tawk.to'" % ticketId
     if settings.jiraFieldTawkHumanID():
        jql = "cf[%s] ~ %d" % (settings.jiraFieldTawkHumanID(), ticketId)
+    logging.info("Checking for existing Tawk.To ticket %s with query: %s" % (ticketId, jql))
 
-    query = {
-      'query': '', 'currentJQL': jql
-    }
-    pickResponse = requests.request(
+    response = requests.request(
        "GET",
-       pickerUrl,
-       params=query,
+       searchUrl,
+       params={ 'jql': jql },
        auth=auth
     )
-    logging.info("pick found: %s", pickResponse.json())
-    return bool(pickResponse.json()['sections'][0]['issues'])
+
+    results = response.json()
+    logging.info("Search found: %s", results)
+    return results["total"] > 0
 
 def createTicketInJIRA(ticket):
     url = settings.jiraInstance() + "rest/api/3/issue"
