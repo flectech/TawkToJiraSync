@@ -81,9 +81,10 @@ def ticketPresentInJira(ticket):
     pickerUrl = settings.jiraInstance() + "rest/api/3/issue/picker"
     ticketId = ticket["humanId"]
     auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
+    jql = "description ~ '%d' in Tawk.to'" % ticketId
     query = {
       'query': '',
-      'currentJQL': "description ~ '"+ticketId+"' in Tawk.to'"
+      'currentJQL': jql
 
     }
     pickResponse = requests.request(
