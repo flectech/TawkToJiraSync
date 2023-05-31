@@ -124,7 +124,7 @@ By watching the logs in the `Sample Telemetry` section of the page, you
 can see what is going on, why things are failing or not being processed
 etc.
 
-Additionally, you can run the functions locally with `func serve`, but
+Additionally, you can run the functions locally with `func start`, but
 you then need sample JSON files of the webhook requests to feed to
 the functions to debug.
 
