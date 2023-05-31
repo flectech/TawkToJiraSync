@@ -16,19 +16,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     ticket = data["ticket"]
     logging.info("Tawk.To new ticket: %s - %s - %s", ticket["id"], ticket["humanId"], ticket["subject"])
 
-    # TODO Check to see if JIRA already knows about this ticket
+    # Check to see if JIRA already knows about this ticket
     # Every so often, Tawk.To will ping us multiple times for the same ticket
-
-    # Check for existing ticket in JIRA
     ticketExists = ticketPresentInJira(ticket)
-    # Create the matching ticket in JIRA, if it doesn't aleready exist
-    if ticketExists == False:
-        jref = createTicketInJIRA(ticket)
-
-    # If possible, send an email to Tawk.To with the JIRA detials in
     if ticketExists:
+        logging.warn("Tawk.To ticket already existed in JIRA: %s" % ticket)
         return func.HttpResponse("Ticket already exists")
-    elif jref:
+
+    # Create the matching ticket in JIRA
+    jref = createTicketInJIRA(ticket)
+
+    # If possible, send an email to Tawk.To with the JIRA details in
+    if jref:
         attachJIRAReference(ticket, jref)
         return func.HttpResponse(f"Ticket created in JIRA as %s" % jref)
     else:
