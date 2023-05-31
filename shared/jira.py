@@ -77,6 +77,24 @@ def fetchTicketFromJIRA(jref):
         return None
     return r.json()
 
+def ticketPresentInJira(ticket):
+    pickerUrl = settings.jiraInstance() + "rest/api/3/issue/picker"
+    ticketId = ticket["humanId"]
+    auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
+    query = {
+      'query': '',
+      'currentJQL': "description ~ '"+ticketId+"' in Tawk.to'"
+
+    }
+    pickResponse = requests.request(
+       "GET",
+       pickerUrl,
+       params=query,
+       auth=auth
+    )
+    logging.info("pick found: %s", pickResponse.json())
+    return bool(pickResponse.json()['sections'][0]['issues'])
+
 def createTicketInJIRA(ticket):
     url = settings.jiraInstance() + "rest/api/3/issue"
     data = buildNewTicketData(ticket)
