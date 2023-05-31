@@ -82,7 +82,7 @@ def ticketPresentInJira(ticket):
     ticketId = ticket["humanId"]
     auth = HTTPBasicAuth(settings.jiraUsername(), settings.jiraAPIKey())
 
-    jql = "description ~ '%d' in Tawk.to'" % ticketId
+    jql = "description ~ 'Ticket %d in Tawk.to'" % ticketId
     if settings.jiraFieldTawkHumanID():
        jql = "cf[%s] ~ %d" % (settings.jiraFieldTawkHumanID(), ticketId)
     logging.info("Checking for existing Tawk.To ticket %s with query: %s" % (ticketId, jql))
